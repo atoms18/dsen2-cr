@@ -128,7 +128,10 @@ def generate_output_images(predicted, ID, predicted_images_path, input_data_fold
 
     print("Generating quartet for ", scene_name)
 
-    sar_preview = get_preview(filepath_sar, False, [1, 2, 2], sar_composite=True)
+    try:
+        sar_preview = get_preview(filepath_sar, False, [1, 2, 2], sar_composite=True)
+    except:
+        sar_preview = np.zeros((100, 100))
 
     opt_bands = [4, 3, 2]  # R, G, B bands (S2 channel numbers)
     cloudFree_preview = get_preview(filepath_cloudFree, False, opt_bands, brighten_limit=2000)
@@ -347,7 +350,10 @@ class DataGenerator(keras.utils.Sequence):
 
     def get_sar_image(self, path, paramx, paramy):
 
-        image = self.get_image_data(paramx, paramy, path)
+        try:
+            image = self.get_image_data(paramx, paramy, path)
+        except:
+            image = np.zeros((2, self.crop_size, self.crop_size))
 
         medianfilter_onsar = False
         if medianfilter_onsar:
