@@ -63,7 +63,7 @@ def DSen2CR_model(input_shape,
 
         x = Concatenate(axis=1)([x, input_opt])
 
-        x = Lambda(concatenate_array)(x)
+        # x = Lambda(concatenate_array)(x)
 
     model = Model(inputs=[input_opt, input_sar], outputs=x)
 
