@@ -55,8 +55,8 @@ def run_dsen2cr(predict_file=None, resume_file=None):
 
     dataset_list_filepath = '../Data/datasetfilelist.csv'
 
-    base_out_path = '/path/to/output/model_runs/'
-    input_data_folder = '/path/to/dataset/parent/folder'
+    base_out_path = '../outputs/'
+    input_data_folder = '../datasets/'
 
     # training parameters
     initial_epoch = 0  # start at epoch number
