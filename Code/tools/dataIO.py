@@ -185,10 +185,15 @@ def save_single_images(sar_preview, cloudy_preview, cloudFree_preview, predicted
                        cloud_mask, predicted_images_path, scene_name):
     out_path = make_dir(os.path.join(predicted_images_path, scene_name))
 
+    print("SAR image")
     save_single_image(sar_preview, out_path, "inputsar")
+    print("input image")
     save_single_image(cloudy_preview, out_path, "input")
+    print("target image")
     save_single_image(cloudFree_preview, out_path, "inputtarg")
+    print("predict image")
     save_single_image(predicted_preview, out_path, "inputpred")
+    print("brightened image")
     save_single_image(cloudy_preview_brightened, out_path, "inputbr")
     save_single_cloudmap(cloud_mask, out_path, "cloudmask")
 

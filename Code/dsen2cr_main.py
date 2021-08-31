@@ -49,7 +49,7 @@ def run_dsen2cr(predict_file=None, resume_file=None):
     data_augmentation = True  # flip and rotate images randomly for data augmentation
 
     random_crop = True  # crop out a part of the input image randomly
-    crop_size = 128  # crop size for training images
+    crop_size = 256  # crop size for training images
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Setup training %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
