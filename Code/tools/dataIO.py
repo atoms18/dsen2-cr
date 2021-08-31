@@ -9,6 +9,7 @@ import rasterio
 import scipy.signal as scisig
 from matplotlib import pyplot as plt
 from tools.feature_detectors import get_cloud_cloudshadow_mask
+from google.colab.patches import cv2_imshow
 
 
 def make_dir(dir_path):
@@ -146,6 +147,7 @@ def generate_output_images(predicted, ID, predicted_images_path, input_data_fold
 
 def save_single_image(image, out_path, name):
     plt.figure(frameon=False)
+    cv2_imshow(image)
     plt.imshow(image)
     plt.gca().get_xaxis().set_visible(False)
     plt.gca().get_yaxis().set_visible(False)
