@@ -16,7 +16,7 @@ from tools.dataIO import get_train_val_test_filelists
 K.set_image_data_format('channels_first')
 
 
-def run_dsen2cr(predict_file=None, resume_file=None):
+def run_dsen2cr(predict_file=None, resume_file=None, nosar="False"):
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +30,7 @@ def run_dsen2cr(predict_file=None, resume_file=None):
     feature_size = 256  # F value in paper
 
     # include the SAR layers as input to model
-    include_sar_input = True
+    include_sar_input = False if(nosar == "True") else True
 
     # cloud mask parameters
     use_cloud_mask = True
@@ -174,6 +174,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DSen2-CR model code')
     parser.add_argument('--predict', action='store', dest='predict_file', help='Predict from model checkpoint.')
     parser.add_argument('--resume', action='store', dest='resume_file', help='Resume training from model checkpoint.')
+    parser.add_argument('--nosar', action='store', dest='no_sar', help='No SAR')
     args = parser.parse_args()
 
-    run_dsen2cr(args.predict_file, args.resume_file)
+    run_dsen2cr(args.predict_file, args.resume_file, args.no_sar)
