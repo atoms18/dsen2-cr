@@ -7,7 +7,9 @@ import matplotlib
 import numpy as np
 import rasterio
 import scipy.signal as scisig
+import matplotlib
 from matplotlib import pyplot as plt
+%matplotlib inline
 from tools.feature_detectors import get_cloud_cloudshadow_mask
 from google.colab.patches import cv2_imshow
 
@@ -148,15 +150,15 @@ def generate_output_images(predicted, ID, predicted_images_path, input_data_fold
     return
 
 
-def save_single_image(image, out_path, name):
-    plt.figure(frameon=False)
-    cv2_imshow(image)
-    plt.imshow(image)
-    plt.gca().get_xaxis().set_visible(False)
-    plt.gca().get_yaxis().set_visible(False)
-    plt.axis('off')
-    plt.savefig(os.path.join(out_path, name + '.png'), dpi=600, bbox_inches='tight', pad_inches=0)
-    plt.close()
+def save_single_image(image, out_path, name, ax):
+    # plt.figure(frameon=False)
+    # cv2_imshow(image)
+    ax.imshow(image)
+    ax.gca().get_xaxis().set_visible(False)
+    ax.gca().get_yaxis().set_visible(False)
+    ax.axis('off')
+    # ax.savefig(os.path.join(out_path, name + '.png'), dpi=600, bbox_inches='tight', pad_inches=0)
+    # plt.close()
 
     return
 
@@ -188,16 +190,17 @@ def save_single_images(sar_preview, cloudy_preview, cloudFree_preview, predicted
                        cloud_mask, predicted_images_path, scene_name):
     out_path = make_dir(os.path.join(predicted_images_path, scene_name))
 
+    ax = plt.subplot(1, 5, 1)
     print("SAR image")
-    save_single_image(sar_preview, out_path, "inputsar")
+    save_single_image(sar_preview, out_path, "inputsar", ax)
     print("input image")
-    save_single_image(cloudy_preview, out_path, "input")
+    save_single_image(cloudy_preview, out_path, "input", ax)
     print("target image")
-    save_single_image(cloudFree_preview, out_path, "inputtarg")
+    save_single_image(cloudFree_preview, out_path, "inputtarg", ax)
     print("predict image")
-    save_single_image(predicted_preview, out_path, "inputpred")
+    save_single_image(predicted_preview, out_path, "inputpred", ax)
     print("brightened image")
-    save_single_image(cloudy_preview_brightened, out_path, "inputbr")
+    save_single_image(cloudy_preview_brightened, out_path, "inputbr", ax)
     save_single_cloudmap(cloud_mask, out_path, "cloudmask")
 
     return

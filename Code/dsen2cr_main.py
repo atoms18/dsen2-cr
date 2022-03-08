@@ -53,10 +53,10 @@ def run_dsen2cr(predict_file=None, resume_file=None, nosar="False"):
 
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Setup training %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    dataset_list_filepath = '../Data/datasetfilelist.csv'
+    dataset_list_filepath = '/content/drive/MyDrive/Colab Notebooks/Input/datasetfilelist.csv'
 
     base_out_path = '../outputs/'
-    input_data_folder = '../datasets/'
+    input_data_folder = '/content/drive/MyDrive/Colab Notebooks/Input'
 
     # training parameters
     initial_epoch = 0  # start at epoch number
