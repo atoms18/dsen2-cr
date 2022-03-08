@@ -6,6 +6,7 @@ from tools.dataIO import make_dir, DataGenerator, process_predicted
 from keras.callbacks import ModelCheckpoint, CSVLogger
 from keras.utils import plot_model
 from tools.myCallbacks import CSV_NBatchLogger, NBatchLogger, TensorBoardWrapper
+from matplotlib import pyplot as plt
 
 
 def train_dsen2cr(model, model_name, base_out_path, resume_file, train_filelist, val_filelist, lr, log_step_freq,
@@ -166,6 +167,8 @@ def predict_dsen2cr(predict_file, model, model_name, base_out_path, input_data_f
         eval_writer = csv.writer(eval_csv_fh, dialect='excel')
         eval_writer.writerow(model.metrics_names)
 
+      
+        fig, ax = plt.subplots(2, 6, figsize=(30,10))
         for i, (data, y) in enumerate(predict_generator):
             print("Processing file number ", i)
             # get evaluation metrics
@@ -178,6 +181,8 @@ def predict_dsen2cr(predict_file, model, model_name, base_out_path, input_data_f
             # process predicted image
             process_predicted(predicted, predict_filelist[i * batch_size:i * batch_size + batch_size],
                               predicted_images_path,
-                              scale, cloud_threshold, input_data_folder)
+                              scale, cloud_threshold, input_data_folder, ax, i)
+        plt.subplots_adjust(wspace=0, hspace=0)
+        plt.show()
 
     print("Prediction finished with success!")

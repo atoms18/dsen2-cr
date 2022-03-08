@@ -9,7 +9,6 @@ import rasterio
 import scipy.signal as scisig
 import matplotlib
 from matplotlib import pyplot as plt
-%matplotlib inline
 from tools.feature_detectors import get_cloud_cloudshadow_mask
 from google.colab.patches import cv2_imshow
 
@@ -25,7 +24,7 @@ def make_dir(dir_path):
 
 def get_train_val_test_filelists(listpath):
     with open(listpath) as f:
-        reader = csv.reader(f, delimiter='\t')
+        reader = csv.reader(f, delimiter=',')
         filelist = list(reader)
 
     train_filelist = []
@@ -123,7 +122,7 @@ def get_preview(file, predicted_file, bands, brighten_limit=None, sar_composite=
         return get_rgb_preview(r, g, b, sar_composite)
 
 
-def generate_output_images(predicted, ID, predicted_images_path, input_data_folder, cloud_threshold):
+def generate_output_images(predicted, ID, predicted_images_path, input_data_folder, cloud_threshold, ax, i):
     scene_name, filepath_sar, filepath_cloudFree, filepath_cloudy = get_info_quartet(ID,
                                                                                      predicted_images_path,
                                                                                      input_data_folder)
@@ -145,7 +144,7 @@ def generate_output_images(predicted, ID, predicted_images_path, input_data_fold
     cloud_mask = get_cloud_cloudshadow_mask(get_raw_data(filepath_cloudy), cloud_threshold)
 
     save_single_images(sar_preview, cloudy_preview, cloudFree_preview, predicted_preview, cloudy_preview_brightened,
-                       cloud_mask, predicted_images_path, scene_name)
+                       cloud_mask, predicted_images_path, scene_name, ax, i)
 
     return
 
@@ -154,9 +153,12 @@ def save_single_image(image, out_path, name, ax):
     # plt.figure(frameon=False)
     # cv2_imshow(image)
     ax.imshow(image)
-    ax.gca().get_xaxis().set_visible(False)
-    ax.gca().get_yaxis().set_visible(False)
+    # ax.set_title(name)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
     ax.axis('off')
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
     # ax.savefig(os.path.join(out_path, name + '.png'), dpi=600, bbox_inches='tight', pad_inches=0)
     # plt.close()
 
@@ -187,29 +189,29 @@ def save_single_cloudmap(image, out_path, name):
 
 
 def save_single_images(sar_preview, cloudy_preview, cloudFree_preview, predicted_preview, cloudy_preview_brightened,
-                       cloud_mask, predicted_images_path, scene_name):
+                       cloud_mask, predicted_images_path, scene_name, ax, i):
     out_path = make_dir(os.path.join(predicted_images_path, scene_name))
 
-    ax = plt.subplot(1, 5, 1)
-    print("SAR image")
-    save_single_image(sar_preview, out_path, "inputsar", ax)
-    print("input image")
-    save_single_image(cloudy_preview, out_path, "input", ax)
-    print("target image")
-    save_single_image(cloudFree_preview, out_path, "inputtarg", ax)
-    print("predict image")
-    save_single_image(predicted_preview, out_path, "inputpred", ax)
-    print("brightened image")
-    save_single_image(cloudy_preview_brightened, out_path, "inputbr", ax)
-    save_single_cloudmap(cloud_mask, out_path, "cloudmask")
+    # print("SAR image")
+    # save_single_image(sar_preview, out_path, "inputsar", ax[0, i])
+    # print("input image")
+    # save_single_image(cloudy_preview, out_path, "input", ax[1, i])
+    # print("target image")
+    # save_single_image(cloudFree_preview, out_path, "inputtarg", ax[2, i])
+    # print("predict image")
+    save_single_image(predicted_preview, out_path, "inputpred", ax[1, i])
+    # print("brightened image")
+    save_single_image(cloudy_preview_brightened, out_path, "inputbr", ax[0, i])
+    # save_single_cloudmap(cloud_mask, out_path, "cloudmask")
+
 
     return
 
 
-def process_predicted(predicted, ID, predicted_images_path, scale, cloud_threshold, input_data_folder):
+def process_predicted(predicted, ID, predicted_images_path, scale, cloud_threshold, input_data_folder, ax, i_):
     for i, data_image in enumerate(predicted):
         data_image *= scale
-        generate_output_images(data_image, ID[i], predicted_images_path, input_data_folder, cloud_threshold)
+        generate_output_images(data_image, ID[i], predicted_images_path, input_data_folder, cloud_threshold, ax, i_)
 
     return
 
